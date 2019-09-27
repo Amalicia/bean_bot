@@ -1,4 +1,6 @@
 import tweepy
+import schedule
+import time
 from config import create_api
 from datetime import date
 
@@ -18,11 +20,19 @@ month_dict = {
 }
 
 
-def main():
-    api = create_api()
+def update_status(api):
     today = date.today()
     api.update_status("Weather for {} {} {}: Sunny with a hint of beans"
                       .format(today.day, month_dict[today.month], today.year))
+
+
+def main():
+    api = create_api()
+    schedule.every().day.at("13:00").do(update_status, api)
+
+    while True:
+        schedule.run_pending()
+        time.sleep("2700")
 
 
 if __name__ == "__main__":

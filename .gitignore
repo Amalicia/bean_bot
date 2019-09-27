@@ -115,3 +115,4 @@ venv.bak/
 dmypy.json
 
 credentials.py
+*.tar.gz
