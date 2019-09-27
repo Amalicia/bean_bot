@@ -1,6 +1,9 @@
 import tweepy
+import logging
 from credentials import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_SECRET
 import os
+
+logger = logging.getLogger()
 
 
 def create_api():
@@ -14,8 +17,8 @@ def create_api():
     api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
     try:
         api.verify_credentials()
-        print("Authentication okay")
+        logger.info("Authentication okay")
     except Exception as e:
-        print("ERROR")
+        logger.error("Could not authenticate. Whoops :/")
         raise e
     return api
