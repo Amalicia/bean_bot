@@ -1,7 +1,6 @@
 import tweepy
 import logging
 from credentials import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_SECRET
-import os
 
 logger = logging.getLogger()
 
