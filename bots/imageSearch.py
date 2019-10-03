@@ -10,10 +10,11 @@ logger = logging.getLogger()
 
 
 def create_request(search_term):
+    page = random.randint(1, 10)
     formatted_search = search_term.replace(" ", "+")
     request = urllib.request.Request('https://www.googleapis.com/customsearch/v1?key=' + CUSTOM_SEARCH_API_KEY +
-                                     '&cx=' + FORMATTED_ENGINE_ID + '&q=' + formatted_search +
-                                     '&searchType=image&rights=cc_publicdomain')
+                                     '&cx=' + FORMATTED_ENGINE_ID + '&q=' + formatted_search + '&start=' + str(page) +
+                                     '&searchType=image&rights=cc_publicdomain&imgSize=large&fileType=jpg&filter=1')
     logger.info("Url created: " + str(request))
     return request
 
