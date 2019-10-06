@@ -1,5 +1,6 @@
 from credentials import CUSTOM_SEARCH_API_KEY, FORMATTED_ENGINE_ID
 import urllib.request
+import urllib.error
 import json
 import random
 import imghdr
@@ -48,7 +49,17 @@ def print_to_file(image_name):
 
 
 def get_image(search_term):
-    request = create_request(search_term)
-    data = fetch_data(request)
-    image = get_random_image(data)
-    print_to_file(image)
+    error_occurred = True
+    while error_occurred:
+        error_occurred = False
+        try:
+            request = create_request(search_term)
+            data = fetch_data(request)
+            image = get_random_image(data)
+            print_to_file(image)
+        except urllib.error.HTTPError as e:
+            logger.error("Whoops, got an error: " + str(e))
+            error_occurred = True
+        except TypeError as e:
+            logger.error("Image returned was not valid, fetching another")
+            error_occurred = True

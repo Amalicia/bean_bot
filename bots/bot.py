@@ -28,7 +28,7 @@ logger = logging.getLogger()
 
 def update_status(api, image):
     today = date.today()
-    api.update_with_media(image, "Weather for {} {} {}: Sunny with a hint of beans"
+    api.update_with_media(image, "This is test"
                           .format(today.day, month_dict[today.month], today.year))
 
     logger.info("Tweet sent")
@@ -38,16 +38,20 @@ def update_status(api, image):
 
 def get_image_name():
     file = open("image-name.txt", "r")
-    return file.read()
+    contents = file.read()
+    file.close()
+    return  contents
 
 
 def main():
     api = create_api()
-    schedule.every().day.at("12:00").do(get_image("baked beans"))
-    schedule.every().day.at("13:00").do(update_status, api, get_image_name())
-    while True:
-        schedule.run_pending()
-        time.sleep(random.randint(600, 1800))
+    get_image("baked beans")
+    update_status(api, get_image_name())
+    # schedule.every().day.at("12:00").do(get_image("baked beans"))
+    # schedule.every().day.at("13:00").do(update_status, api, get_image_name())
+    # while True:
+    #     schedule.run_pending()
+    #     time.sleep(random.randint(600, 1800))
 
 
 if __name__ == "__main__":
