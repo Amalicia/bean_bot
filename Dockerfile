@@ -7,5 +7,4 @@ copy bots/imageSearch.py /bots/
 COPY requirements.txt /tmp
 RUN pip3 install -r /tmp/requirements.txt
 
-WORKDIR /bots
-CMD ["python3", "bot.py"]
+CMD ["python3", "bots/bot.py"]
