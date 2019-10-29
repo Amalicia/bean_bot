@@ -26,26 +26,41 @@ month_dict = {
 logger = logging.getLogger()
 
 
-def update_status(api, image):
-    today = date.today()
-    api.update_status("Weather for {} {} {}: Sunny with a hint of beans"
-                      .format(today.day, month_dict[today.month], today.year))
+def update_status(api, image, message):
+    api.update_with_media(image, message)
     logger.info("Tweet sent")
-    os.remove(image)
+    # os.remove(image)
     logger.info("Image deleted")
+
+
+def format_weather_string():
+    today = date.today()
+    return "Weather for {} {} {}: Sunny with a hint of beans".format(today.day, month_dict[today.month], today.year)
+
+
+def format_morning_string():
+    today = date.today()
+    return "Good Morning! ({} {} {})".format(today.day, month_dict[today.month], today.year)
+
+
+def format_night_string():
+    today = date.today()
+    return "Good Night! ({} {} {})".format(today.day, month_dict[today.month], today.year)
 
 
 def get_image_name():
     file = open("image-name.txt", "r")
     contents = file.read()
     file.close()
-    return  contents
+    return contents
 
 
 def main():
     api = create_api()
-    schedule.every().day.at("12:00").do(get_image, "baked beans")
-    schedule.every().day.at("13:00").do(update_status, api, get_image_name())
+    schedule.every().day.at("07:00").do(update_status, api, "./image/sunrise.jpg", format_morning_string())
+    schedule.every().day.at("12:30").do(get_image, "baked beans")
+    schedule.every().day.at("13:00").do(update_status, api, get_image_name(), format_weather_string())
+    schedule.every().day.at("22:00").do(update_status, api, "./image/moon.jpg", format_night_string())
     while True:
         schedule.run_pending()
         time.sleep(random.randint(600, 1800))
